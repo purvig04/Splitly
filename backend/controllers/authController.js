@@ -1,55 +1,58 @@
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+
 
 const handleErrors = (err) => {
-    //console.log(err.message,err.code)
-    const errors= {name:'',email:'',password:''}
+  //console.log(err.message,err.code)
+  const errors = { name: "", email: "", password: "" };
 
-    //duplicate error
-    if(err.code ==11000){
-        errors.email="User is already registered";
-        return errors;
-    }
-
-    //validation error
-    if(err.message.includes('user validation failed')){
-        Object.values(err.errors).forEach(({properties}) =>{
-            errors[properties.path] = properties.message
-        })
-        
-    }
-
+  //duplicate error
+  if (err.code == 11000) {
+    errors.email = "User is already registered";
     return errors;
+  }
 
-
-}
-
-const getRegister=(req,res)=>{
-    console.log("req: " + req )
-    res.send('register')
-
-}
-
-const postRegister = (req, res) => {
-    const {name , email ,password} = req.body
-    console.log(name,email,password);
-    
-    
-  res.send("user registered");
+  //validation error
+  if (err.message.includes("user validation failed")) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+  return errors;
 };
 
-const postLogin = async (req, res) => {
-    const { name, email, password } = req.body;
-
-    try{
-        const user= await User.create({name,email,password})
-        res.status(201).json(user);
-    }
-    catch(err){
-        const error = handleErrors(err);
-        res.status(400).send(error)
-        
-    }
-
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, "f1509e6ecd90b8a3d628fa3cc6f3eec9", {
+    expiresIn: maxAge,
+  });
 };
 
-module.exports={getRegister,postRegister,postLogin}
+const getRegister = (req, res) => {
+  console.log("req: " + req);
+  res.send("register");
+};
+
+const postRegister = async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    const user = await User.create({ name, email, password });
+    const token = createToken(user._id);
+    // res.cookie("testing", "cookies");
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user: user._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({errors});
+  }
+};
+
+const postLogin = (req, res) => {
+  const { email, password } = req.body;
+  const user = { email, password };
+
+  res.status(200).json(user);
+};
+
+module.exports = { getRegister, postRegister, postLogin };

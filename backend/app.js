@@ -4,10 +4,18 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 const connectDB = require("./db/connect");
 require('dotenv').config();
+const cookieParser = require('cookie-parser')
 
 
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:8081", 
+    credentials: true,
+  })
+);
 app.use(express.json())
+app.use(cookieParser())
 app.use('/api',authRoutes);
 
 app.get("/", (req, res) => {
