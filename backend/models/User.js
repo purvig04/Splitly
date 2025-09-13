@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please enter password"],
-    minlength: [6, "password should be more than 8 characters"],
+    minlength: [8, "password should be more than 8 characters"],
   },
 });
 
@@ -29,6 +29,21 @@ userSchema.pre('save',async function(next){
   this.password = await bcrypt.hash(this.password,salt);
   next();
 })
+
+
+//making static method to get user logged in after checking email and password
+userSchema.statics.login = async function(email,password){
+  const user = await this.findOne({email})
+  if(user){
+    const auth=await bcrypt.compare(password,user.password)
+    if(auth){
+      return user
+    }
+    throw Error ("incorrect password")
+
+  }
+  throw Error("incorrect email")
+}
 
 const User= mongoose.model('user' , userSchema)
 

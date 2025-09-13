@@ -50,7 +50,7 @@ form h2{
   margin-bottom: 40px;
 }
 
-.register label{
+.register label ,.login label{
   float: left;
   margin-bottom: 3px;
 }

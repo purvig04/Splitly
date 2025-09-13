@@ -51,7 +51,7 @@ export default {
                 })
                 console.log(result.data);
                 if(result.status==201){
-              this.$router.push({name:'Home'})
+              this.$router.push({name:'Login'})
             }
 
             } catch (err) {

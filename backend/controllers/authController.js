@@ -1,11 +1,18 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-
 const handleErrors = (err) => {
-  //console.log(err.message,err.code)
+  console.log(err.message,err.code)
   const errors = { name: "", email: "", password: "" };
 
+  //error during login
+  if(err.message=='incorrect email'){
+    errors.email="Email is not registered"
+  }
+  if (err.message == "incorrect password") {
+    errors.password = "Password incorrect";
+  }
+  
   //duplicate error
   if (err.code == 11000) {
     errors.email = "User is already registered";
@@ -44,15 +51,23 @@ const postRegister = async (req, res) => {
     res.status(201).json({ user: user._id });
   } catch (err) {
     const errors = handleErrors(err);
-    res.status(400).json({errors});
+    res.status(400).json({ errors });
   }
 };
 
-const postLogin = (req, res) => {
+const postLogin = async (req, res) => {
   const { email, password } = req.body;
-  const user = { email, password };
 
-  res.status(200).json(user);
+  try {
+    const user= await User.login(email,password);
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({user:user._id})
+  } catch (err) {
+    const errors = handleErrors(err)
+    res.status(400).json({errors});
+  }
+
 };
 
 module.exports = { getRegister, postRegister, postLogin };
