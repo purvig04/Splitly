@@ -74,7 +74,10 @@ const postLogin = async (req, res) => {
 };
 
 const getHome= (req,res) =>{
-  res.send("Home page")
+  res.status(200).json({
+    message:'Welcome to home Page',
+    user:res.locals.user
+  })
 }
 
 const getLogout =(req,res) =>{

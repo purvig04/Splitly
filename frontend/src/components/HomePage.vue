@@ -1,30 +1,31 @@
-<template><h1>Home page</h1>
-  <button v-on:click="logout">Logout</button></template>
+<template>
+<HeaderComp :user="user"/>
+<h1>Home page</h1>
+
+  </template>
 <script>
 import axios from "axios";
+import HeaderComp from "./HeaderComp.vue";
 export default {
   name: "HomePage",
-  methods:{
-    async logout() {
-        try{
-          const result= await axios.get("http://localhost:3000/api/logout",{withCredentials: true})
-          console.log(result);
-          this.$router.push({name:"Login"})
-        }
-       catch(err){
-        console.log(err);
-        
-       }
-      
-      },
+  components:{
+    HeaderComp
   },
+  data(){
+    return{
+      user:null
+    }
+  },
+
   async mounted() {
     try {
       const result = await axios.get("http://localhost:3000/api/home",{ withCredentials: true});
-      console.log(result);
+  
+      this.user=result.data.user
 
     } catch (err) {
       if (err.response && err.response.status === 401) {
+        this.user=null
         this.$router.push("/login");
       }
     }

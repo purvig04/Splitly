@@ -4,10 +4,11 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 const connectDB = require("./db/connect");
 require('dotenv').config();
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const { checkUser } = require("./middleware/authMiddleware");
 
 
-
+//middleware
 app.use(
   cors({
     origin: "http://localhost:8081", 
@@ -16,14 +17,17 @@ app.use(
 );
 app.use(express.json())
 app.use(cookieParser())
-app.use('/api',authRoutes);
 
+//routes
+// app.use('*',checkUser)
+app.use('/api',authRoutes);
 app.get("/", (req, res) => {
   res.send("WORKING");
 });
 
-const port = process.env.PORT || 3000;
 
+//db connection and port
+const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connectDB(process.env.DB_URI);
