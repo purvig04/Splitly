@@ -3,17 +3,16 @@
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
       <router-link to="/register">Sign up</router-link>
+    
       <!-- <a v-on:click="logout" href="#">Logout</a> -->
     </div>
   </template>
   <script>
+  // import axios from 'axios';
   export default {
     name: "HeaderComp",
     methods: {
-      logout() {
-       localStorage.clear();
-       this.$router.push({name:"Login"})
-      },
+      
     },
   };
   </script>

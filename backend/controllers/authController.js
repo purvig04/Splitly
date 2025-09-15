@@ -77,4 +77,10 @@ const getHome= (req,res) =>{
   res.send("Home page")
 }
 
-module.exports = { getRegister, postRegister, postLogin,getHome };
+const getLogout =(req,res) =>{
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.send("Logged out")
+  res.status(204).json({message:"logged out"})
+}
+
+module.exports = { getRegister, postRegister, postLogin,getHome ,getLogout};
