@@ -1,7 +1,7 @@
 <template>
     <HeaderComp :user="user"/>
     <h1>Landing Page</h1>
-    <button class="addExpenses"><router-link to="/">Add Expenses</router-link></button>
+    <button ><router-link class="addExpenses"  to="/">Add Expenses</router-link></button>
 </template>
 
 <script>
@@ -35,6 +35,18 @@ export default {
 </script>
 
 <style>
-body{
-    margin-top: 0;
-}</style>
+button{
+    background-color: #225750;
+     border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+
+  padding: 12px;
+}
+
+.addExpenses{
+    color: white;
+    text-decoration: none;
+}
+</style>

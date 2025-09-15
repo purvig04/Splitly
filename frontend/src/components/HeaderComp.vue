@@ -34,7 +34,7 @@ export default {
 
 <style>
 .nav {
-  background-color: #333;
+  background-color: #225750;
   overflow: hidden;
 }
 
