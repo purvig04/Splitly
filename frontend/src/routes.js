@@ -7,7 +7,12 @@ import LandingPage from "./components/LandingPage.vue";
 const routes = [
   { name: "Login", path: "/login", component: LoginPage },
   { name: "Register", path: "/register", component: RegisterPage },
-  { name: "Home", path: "/", component: HomePage },
+  {
+    name: "Home",
+    path: "/",
+    component: HomePage,
+    meta: { requiresAuth: true },
+  },
   { name: "Landing", path: "/landing", component: LandingPage },
 ];
 

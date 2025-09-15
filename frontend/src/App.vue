@@ -20,7 +20,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 body{
@@ -41,7 +40,7 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  height: 90vh;
 }
 
 form h2{
@@ -90,6 +89,6 @@ form h2{
 }
 
 .register button:hover ,.login button:hover{ 
-  background-color: #2980b9;
+  background-color: #3d867d;
 }
 </style>
